@@ -22,7 +22,7 @@ option casemap:none
 
 GetKernelBase proto
 
-MyGetProcAddress proto hDll:HINSTANCE,pName:LPCTSTR
+MyGetProcAddress proto  hDll:HINSTANCE,pName:LPCTSTR
 mystrcmp  proto
 
 
@@ -44,6 +44,8 @@ ComInfo ends
 
 
 .code
+CODE_START:
+    jmp start	
 	g_szLoadLibraryA db "LoadLibraryA",0
 	g_szGetProcAddress db "GetProcAddress",0
 	g_szCabinet db "Cabinet",0
@@ -51,7 +53,7 @@ ComInfo ends
 	g_szDecompress db "Decompress",0
 	g_szVirtualAlloc db "VirtualAlloc",0
 	g_szRtlMoveMemory db "RtlMoveMemory",0
-	g_szNtDll db "ntdll"
+	g_szNtDll db "ntdll",0
 	
 	g_env Environment <>
 	
@@ -168,7 +170,7 @@ GetKernelBase proc
 GetKernelBase endp
 
 
-MyGetProcAddress proc hDll:HINSTANCE,pName:LPCTSTR
+MyGetProcAddress proc  uses esi ebx edi  hDll:HINSTANCE,pName:LPCTSTR
 	LOCAL @dwAddressOfNames:DWORD
 	LOCAL @dwCnt:DWORD
 
@@ -289,7 +291,7 @@ NEXT:
 	push NULL
 	push 4
 	call [esi].m_pfnCreateDecompressor
-	mov @hDecom,eax
+	 
 	
 	push PAGE_EXECUTE_READWRITE
 	push MEM_COMMIT
@@ -300,7 +302,7 @@ NEXT:
 	
 	lea eax,@dwDecomSizeRet
 	push eax
-	push @dwDecomSIze
+	push @dwDecomSize
 	push @pDecomBuf
 	push @dwComSize
 	push @pComData

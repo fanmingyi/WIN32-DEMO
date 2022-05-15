@@ -44,6 +44,8 @@ ComInfo ends
 
 
 .code
+CODE_START:
+    jmp start	
 	g_szLoadLibraryA db "LoadLibraryA",0
 	g_szGetProcAddress db "GetProcAddress",0
 	g_szCabinet db "Cabinet",0
@@ -289,7 +291,7 @@ NEXT:
 	push NULL
 	push 4
 	call [esi].m_pfnCreateDecompressor
-	mov @hDecom,eax
+	 
 	
 	push PAGE_EXECUTE_READWRITE
 	push MEM_COMMIT

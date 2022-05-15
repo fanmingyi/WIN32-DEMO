@@ -53,8 +53,8 @@ CODE_START:
 	g_szDecompress db "Decompress",0
 	g_szVirtualAlloc db "VirtualAlloc",0
 	g_szRtlMoveMemory db "RtlMoveMemory",0
-	g_szNtDll db "ntdll"
-	
+	g_szNtDll db "ntdll",0
+	;g_szNtDll2 db "ntdll",0
 	g_env Environment <>
 	
 
@@ -71,7 +71,7 @@ NEXT:
 	sub ebx,offset NEXT;偏移
 	
 	;定位Environment
-	mov eax,offset CODE_START
+	mov eax,offset g_env
 	add eax,ebx
 	mov esi,eax
 	assume esi:ptr Environment
@@ -267,7 +267,7 @@ NEXT:
 	
 	
 	;定位到压缩数据
-	mov eax,offset g_szLoadLibraryA
+	mov eax,offset CODE_START
 	add eax,ebx
 	sub eax,size ComInfo
 	mov edi,eax
